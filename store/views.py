@@ -17,7 +17,7 @@ def store(request,category_slug=None):
          paged_prodcuts=paginator.get_page(page)
          books_count=books.count()
     else:
-        books=Book.objects.all().filter(is_available=True)
+        books=Book.objects.all().filter(is_available=True).order_by('id')
         paginator=Paginator(books,6)
         page=request.GET.get('page')
         paged_prodcuts=paginator.get_page(page)

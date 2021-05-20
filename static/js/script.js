@@ -1,19 +1,4 @@
-// some scripts
-
-// jquery ready start
 $(document).ready(function() {
-	// jQuery code
-
-
-    /* ///////////////////////////////////////
-
-    THESE FOLLOWING SCRIPTS ONLY FOR BASIC USAGE, 
-    For sliders, interactions and other
-
-    */ ///////////////////////////////////////
-    
-
-	//////////////////////// Prevent closing from click inside dropdown
     $(document).on('click', '.dropdown-menu', function (e) {
       e.stopPropagation();
     });
@@ -54,7 +39,9 @@ $(document).ready(function() {
 
 
 
-    
-}); 
-// jquery end
 
+});
+setTimeout(function(){
+    $('.message').fadeOut('slow')
+
+  },4000)
