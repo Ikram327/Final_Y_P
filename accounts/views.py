@@ -30,6 +30,9 @@ def register(request):
             user = Account.objects.create_user(first_name=first_name,last_name=last_name,username=username,email=email,password=password)
             user.phone_number=phone_number
             user.save()
+            user_profile=UserProfile()
+            user_profile.user=user
+            user_profile.save()
             messages.success(request,'Registration successful.')
             return redirect('login')
     else:

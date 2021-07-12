@@ -8,6 +8,7 @@ class RegistrationForm(forms.ModelForm):
     confirm_password=forms.CharField(widget=forms.PasswordInput(attrs={
     'placeholder':'Confirm Password'
     }))
+    # first_name = forms.CharField(required=True,widget=forms.TextInput(attrs={'pattern':'[A-Za-z ]+','placeholder':'Enter First Name', 'title':'Enter Characters Only '}))
     class Meta:
         model=Account
         fields=['first_name','last_name','email','phone_number','password']
@@ -25,8 +26,18 @@ class RegistrationForm(forms.ModelForm):
                cleaned_data = super(RegistrationForm, self).clean()
                password = cleaned_data.get('password')
                confirm_password = cleaned_data.get('confirm_password')
+               fname=cleaned_data.get('first_name')
+               lname=cleaned_data.get('last_name')
                if password != confirm_password:
                    raise forms.ValidationError('Password does not match')
+               else:
+                   if len(password) <8:
+                       raise forms.ValidationError('The Pasword is to short')
+               if len(fname)<4 and  (lname) < 4:
+                   raise forms.ValidationError('Name must be more then 4 character')
+
+
+
 class UserForm(forms.ModelForm):
     class Meta:
         model =Account

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.core.validators import RegexValidator,validate_email
 class MyAccountManager(BaseUserManager):
     def create_user(self,first_name,last_name,username,email,password=None):
         if not email:
@@ -34,10 +35,11 @@ class MyAccountManager(BaseUserManager):
         return user
 
 class Account(AbstractBaseUser):
-    first_name=models.CharField(max_length=50)
-    last_name=models.CharField(max_length=50)
+    alphanumeric = RegexValidator(r'^[a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    first_name=models.CharField(max_length=50, validators=[alphanumeric])
+    last_name=models.CharField(max_length=50, validators=[alphanumeric])
     username=models.CharField(max_length=50,unique=True)
-    email=models.EmailField(max_length=100,unique=True)
+    email=models.EmailField(max_length=100,unique=True,validators=[validate_email])
     phone_number=models.CharField(max_length=50)
 
     date_joined=models.DateTimeField(auto_now_add=True)
@@ -58,11 +60,12 @@ class Account(AbstractBaseUser):
         return True
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
+
 class UserProfile(models.Model):
     user=models.OneToOneField(Account,on_delete=models.CASCADE)
     address_line_1=models.CharField(max_length=50,blank=True)
     address_line_2=models.CharField(max_length=50 ,blank=True)
-    profile_picture=models.ImageField(blank=True,upload_to='userproflie')
+    profile_picture=models.ImageField(blank=True,null=True,upload_to='userproflie' ,default='https://www.w3schools.com/howto/img_avatar.png')
     city=models.CharField(blank=True,max_length=20)
     state=models.CharField(blank=True ,max_length=20)
     def __str__(self):
